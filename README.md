@@ -136,14 +136,21 @@ skill-exchange-2.0/
 ## Design System
 
 ### Color Palette
-- **Midnight Blue**: `#1e1b4b` to `#312e81`
-- **Violet**: `#a855f7` to `#7e22ce`
-- **Neon Accents**: Blue (`#00f0ff`), Purple (`#bf00ff`), Pink (`#ff00e5`)
+- **Primary - Indigo**: Deep indigo shades from `#1e1b4b` to `#6366f1`
+- **Secondary - Amber/Orange**: Warm accents from `#f59e0b` to `#f97316`
+- **Background**: Slate dark tones (`#020617` to `#1e293b`)
+- **Glass Effects**: Semi-transparent overlays with backdrop blur
+
+### Gradients
+- **Primary Gradient**: Indigo `#4f46e5` → `#6366f1`
+- **Secondary Gradient**: Amber `#f59e0b` → Orange `#f97316`
+- **Dark Gradient**: Slate `#020617` → `#1e293b`
 
 ### Animations
 - Float, Glow, Gradient Shift, Tilt
+- Fade In, Slide Up/Down, Scale In
 - Page transitions with Framer Motion
-- Hover effects on interactive elements
+- Hover effects and interactive micro-animations
 
 ## Contributing
 
