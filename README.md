@@ -152,6 +152,24 @@ skill-exchange-2.0/
 - Page transitions with Framer Motion
 - Hover effects and interactive micro-animations
 
+## Screenshots
+
+### Login and Authentication
+![Login Page](pics/login.png)
+
+### User Profile
+![User Details](pics/profile.png)
+
+### Dashboard
+![Dashboard](pics/dashboard_1.png)
+![Dashboard](pics/dashboard_2.png)
+
+### Find Matches
+![Matches Page](pics/matched_user.png)
+
+### Skill Management
+![Add Skills](pics/matched_user_info.png)
+
 ## Contributing
 
 1. Fork the repository
