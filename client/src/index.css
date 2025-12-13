@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Indigo & Amber theme colors */
+  --indigo-gradient: linear-gradient(135deg, #020617 0%, #1e293b 100%);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --indigo: #4f46e5;
+  --amber: #f59e0b;
+  --orange: #f97316;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-gray-100 min-h-screen;
+    background-attachment: fixed;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+
+  /* Glassmorphism card */
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-glass;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:bg-white/[0.15] hover:shadow-glow hover:-translate-y-1;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-indigo-400 via-blue-400 to-amber-400 bg-clip-text text-transparent;
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  .gradient-text-blue {
+    @apply bg-gradient-to-r from-indigo-300 via-blue-400 to-indigo-500 bg-clip-text text-transparent;
+  }
+
+  /* Floating label input */
+  .floating-input-group {
+    @apply relative;
+  }
+
+  .floating-input {
+    @apply w-full px-4 pt-6 pb-2 bg-white/5 border border-white/20 rounded-xl text-gray-100 placeholder-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm;
+  }
+
+  .floating-input:focus {
+    @apply bg-white/10 shadow-glow;
+  }
+
+  .floating-label {
+    @apply absolute left-4 top-4 text-gray-400 text-sm transition-all duration-300 pointer-events-none;
+  }
+
+  .floating-input:focus~.floating-label,
+  .floating-input:not(:placeholder-shown)~.floating-label {
+    @apply top-2 text-xs text-indigo-400;
+  }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-slate-900/50 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-indigo-600/50 rounded-full hover:bg-indigo-500/70;
+  }
+
+  /* Neon button */
+  .btn-neon {
+    @apply relative px-6 py-3 bg-gradient-to-r from-indigo-600 to-amber-600 rounded-xl font-semibold text-white overflow-hidden transition-all duration-300 hover:shadow-neon hover:scale-105;
+  }
+
+  .btn-neon::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-indigo-400 to-amber-400 opacity-0 transition-opacity duration-300;
+  }
+
+  .btn-neon:hover::before {
+    @apply opacity-100;
+  }
+
+  .btn-neon span {
+    @apply relative z-10;
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    @apply bg-gradient-to-r from-white/5 via-white/10 to-white/5 bg-[length:200%_100%] animate-gradient-shift rounded;
+  }
+
+  /* Badge variations */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-indigo-600/30 text-indigo-300 border border-indigo-500/50;
+  }
+
+  .badge-secondary {
+    @apply bg-amber-600/30 text-amber-300 border border-amber-500/50;
+  }
+
+  .badge-success {
+    @apply bg-emerald-600/30 text-emerald-300 border border-emerald-500/50;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px currentColor;
+  }
+
+  /* Animation delays */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+}
+
+/* Custom animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 1000px 100%;
+}
