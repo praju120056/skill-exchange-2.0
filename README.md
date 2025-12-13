@@ -1,6 +1,6 @@
 # Skill Exchange 2.0 - MERN Stack
 
-A modern skill exchange platform built with MongoDB, Express, React, and Node.js featuring a stunning glassmorphism UI.
+A modern skill exchange platform built with MongoDB, Express, React, and Node.js featuring a glassmorphism UI.
 
 ## Features
 
@@ -36,7 +36,7 @@ A modern skill exchange platform built with MongoDB, Express, React, and Node.js
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/praju120056/skill-exchange-2.0.git
    cd skill-exchange-2.0
    ```
 
@@ -152,13 +152,28 @@ skill-exchange-2.0/
 - Page transitions with Framer Motion
 - Hover effects and interactive micro-animations
 
-## Contributing
+## Screenshots
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Login and Authentication
+![Login Page](pics/login.png)
+
+### User Profile
+![User Details](pics/profile.png)
+
+### Dashboard
+![Dashboard](pics/dashboard_1.png)
+![Dashboard](pics/dashboard_2.png)
+
+### Find Matches
+![Matches Page](pics/matched_user.png)
+
+### Skill Management
+![Add Skills](pics/matched_user_info.png)
+
+## Contributors
+- [Prajakth](https://github.com/praju120056)
+- [Praneeth](https://github.com/PraneethUpadhya195)
+
 
 ## License
 
