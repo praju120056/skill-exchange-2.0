@@ -36,7 +36,7 @@ A modern skill exchange platform built with MongoDB, Express, React, and Node.js
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/praju120056/skill-exchange-2.0.git
    cd skill-exchange-2.0
    ```
 
