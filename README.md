@@ -1,5 +1,7 @@
 # Skill Exchange 2.0 - MERN Stack
 
+Deployed here : https://skill-exchange-htcsaefxdfe8g2fv.southeastasia-01.azurewebsites.net
+
 A modern skill exchange platform built with MongoDB, Express, React, and Node.js featuring a glassmorphism UI.
 
 ## Features
