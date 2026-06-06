@@ -60,7 +60,7 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.join(clientDist, 'index.html'));
     });
 }
-
+//made by praju120056
 // Error handler (must be last middleware)
 app.use(errorHandler);
 
