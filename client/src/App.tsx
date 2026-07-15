@@ -7,6 +7,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Matches from './pages/Matches';
 import Profile from './pages/Profile';
+import Messages from './pages/Messages';
 import HeroSection from './components/sections/HeroSection';
 import Button from './components/ui/Button';
 import { motion } from 'framer-motion';
@@ -138,6 +139,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <Profile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/messages"
+                        element={
+                            <ProtectedRoute>
+                                <Messages />
                             </ProtectedRoute>
                         }
                     />

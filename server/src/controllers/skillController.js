@@ -212,7 +212,7 @@ export const findMatches = asyncHandler(async (req, res) => {
     const matches = await Promise.all(
         potentialMatches.map(async (match) => {
             // Get user info
-            const user = await User.findById(match._id).select('name email avatarUrl');
+            const user = await User.findById(match._id).select('name avatarUrl');
 
             // Get all teaching skills
             const teachingSkills = await UserSkill.find({
@@ -234,7 +234,6 @@ export const findMatches = asyncHandler(async (req, res) => {
             return {
                 _id: user._id,
                 name: user.name,
-                email: user.email,
                 avatarUrl: user.avatarUrl,
                 matchCount: match.matchCount,
                 teachingSkills,

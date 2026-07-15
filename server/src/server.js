@@ -1,3 +1,4 @@
+import http from 'http';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,13 +8,18 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import skillRoutes from './routes/skills.js';
+import connectionRoutes from './routes/connections.js';
+import chatRoutes from './routes/chat.js';
+import aiRoutes from './routes/ai.js';
 import errorHandler from './middleware/errorHandler.js';
 import rateLimit from 'express-rate-limit';
+import initSocket from './socket/socket.js';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
 
 // Middleware
 app.use(express.json());
@@ -37,6 +43,9 @@ app.use(cors({
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/skills', skillRoutes);
+app.use('/api/connections', connectionRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -64,6 +73,9 @@ if (process.env.NODE_ENV === 'production') {
 // Error handler (must be last middleware)
 app.use(errorHandler);
 
+// Initialise Socket.IO
+initSocket(server);
+
 // MongoDB connection
 const connectDB = async () => {
     try {
@@ -84,7 +96,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
     await connectDB();
 
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
     });
 };

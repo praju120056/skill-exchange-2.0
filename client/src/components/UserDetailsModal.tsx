@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Copy, GraduationCap, BookOpen, Check } from 'lucide-react';
+import { X, GraduationCap, BookOpen, UserPlus, UserCheck, Clock } from 'lucide-react';
 import SkillBadge from './ui/SkillBadge';
 import Button from './ui/Button';
 import { toast } from 'react-hot-toast';
+import { sendConnectionRequest, getConnectionStatus } from '../services/chatService';
+import type { Connection } from '../types/chat';
 
 interface Skill {
     _id: string;
@@ -23,7 +25,6 @@ interface UserDetailsModalProps {
     user: {
         _id: string;
         name: string;
-        email: string;
         avatarUrl: string;
         teachingSkills: UserSkill[];
         learningSkills: UserSkill[];
@@ -39,17 +40,93 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
     matchCount,
     matchedSkills
 }) => {
-    const [emailCopied, setEmailCopied] = React.useState(false);
+    const [connection, setConnection] = React.useState<Connection | null>(null);
+    const [isConnecting, setIsConnecting] = React.useState(false);
+    const [statusLoading, setStatusLoading] = React.useState(false);
 
-    const copyEmail = () => {
-        navigator.clipboard.writeText(user.email);
-        setEmailCopied(true);
-        toast.success('Email copied to clipboard!');
-        setTimeout(() => setEmailCopied(false), 2000);
+    // Load connection status when modal opens
+    React.useEffect(() => {
+        if (!isOpen || !user._id) return;
+
+        const loadStatus = async () => {
+            setStatusLoading(true);
+            try {
+                const res = await getConnectionStatus(user._id);
+                setConnection(res.connection);
+            } catch {
+                // not critical — button will show default state
+            } finally {
+                setStatusLoading(false);
+            }
+        };
+
+        loadStatus();
+    }, [isOpen, user._id]);
+
+    const handleConnect = async () => {
+        setIsConnecting(true);
+        try {
+            const conn = await sendConnectionRequest(user._id);
+            setConnection(conn);
+            toast.success(`Connection request sent to ${user.name}!`);
+        } catch (err: unknown) {
+            const error = err as Error;
+            toast.error(error.message || 'Failed to send request');
+        } finally {
+            setIsConnecting(false);
+        }
     };
 
-    const openEmailClient = () => {
-        window.location.href = `mailto:${user.email}?subject=Skill Exchange from ${user.name}`;
+    const renderConnectionButton = () => {
+        if (statusLoading) {
+            return (
+                <Button variant="outline" isLoading className="flex-1">
+                    Checking...
+                </Button>
+            );
+        }
+
+        if (!connection) {
+            return (
+                <Button
+                    variant="primary"
+                    onClick={handleConnect}
+                    isLoading={isConnecting}
+                    icon={<UserPlus className="w-5 h-5" />}
+                    className="flex-1"
+                >
+                    Send Connection Request
+                </Button>
+            );
+        }
+
+        if (connection.status === 'pending') {
+            return (
+                <Button
+                    variant="outline"
+                    disabled
+                    icon={<Clock className="w-5 h-5" />}
+                    className="flex-1"
+                >
+                    Request Pending
+                </Button>
+            );
+        }
+
+        if (connection.status === 'accepted') {
+            return (
+                <Button
+                    variant="outline"
+                    disabled
+                    icon={<UserCheck className="w-5 h-5" />}
+                    className="flex-1 border-emerald-500/50 text-emerald-300"
+                >
+                    Already Connected
+                </Button>
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -104,20 +181,9 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
                                         <h2 className="text-3xl font-bold gradient-text mb-2">
                                             {user.name}
                                         </h2>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-gray-300">{user.email}</span>
-                                            <button
-                                                onClick={copyEmail}
-                                                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors group"
-                                                title="Copy email"
-                                            >
-                                                {emailCopied ? (
-                                                    <Check className="w-4 h-4 text-emerald-400" />
-                                                ) : (
-                                                    <Copy className="w-4 h-4 text-gray-400 group-hover:text-indigo-400" />
-                                                )}
-                                            </button>
-                                        </div>
+                                        <p className="text-sm text-gray-400">
+                                            Connect to start a private conversation
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -194,22 +260,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
 
                             {/* Action Buttons */}
                             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-white/10">
-                                <Button
-                                    variant="primary"
-                                    onClick={copyEmail}
-                                    icon={emailCopied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                                    className="flex-1"
-                                >
-                                    {emailCopied ? 'Copied!' : 'Copy Email'}
-                                </Button>
-                                <Button
-                                    variant="secondary"
-                                    onClick={openEmailClient}
-                                    icon={<Mail className="w-5 h-5" />}
-                                    className="flex-1"
-                                >
-                                    Send Email
-                                </Button>
+                                {renderConnectionButton()}
                             </div>
                         </motion.div>
                     </div>
