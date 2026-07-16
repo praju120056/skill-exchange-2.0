@@ -119,7 +119,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
                     variant="outline"
                     disabled
                     icon={<UserCheck className="w-5 h-5" />}
-                    className="flex-1 border-emerald-500/50 text-emerald-300"
+                    className="flex-1 border-slate-700 text-slate-400"
                 >
                     Already Connected
                 </Button>
@@ -163,20 +163,20 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
                                 </button>
 
                                 {matchCount > 0 && (
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-600/30 border border-indigo-500/50 rounded-full mb-4">
-                                        <span className="text-indigo-300 font-semibold text-sm">
-                                            🎯 {matchCount} {matchCount === 1 ? 'Skill' : 'Skills'} Match
-                                        </span>
-                                    </div>
-                                )}
+                                     <div className="badge badge-success mb-4 py-1.5 px-3">
+                                         <span className="font-semibold text-xs">
+                                             🎯 {matchCount} {matchCount === 1 ? 'Skill' : 'Skills'} Match
+                                         </span>
+                                     </div>
+                                 )}
 
                                 {/* User Info */}
                                 <div className="flex items-center gap-4">
-                                    <img
-                                        src={user.avatarUrl}
-                                        alt={user.name}
-                                        className="w-20 h-20 rounded-full border-4 border-indigo-500 shadow-neon-blue"
-                                    />
+                                     <img
+                                         src={user.avatarUrl}
+                                         alt={user.name}
+                                         className="w-20 h-20 rounded-full border-4 border-slate-800 shadow-glass"
+                                     />
                                     <div className="flex-1">
                                         <h2 className="text-3xl font-bold gradient-text mb-2">
                                             {user.name}

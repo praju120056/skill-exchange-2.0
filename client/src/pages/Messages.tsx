@@ -21,7 +21,7 @@ const Messages: React.FC = () => {
     const [leftTab, setLeftTab] = useState<LeftTab>('messages');
     const [showMobileChat, setShowMobileChat] = useState(false);
 
-    const socketRef = useSocket();
+    const socket = useSocket();
 
     const fetchConversations = useCallback(async () => {
         try {
@@ -195,7 +195,7 @@ const Messages: React.FC = () => {
 
                             <ChatWindow
                                 conversation={selectedConversation}
-                                socket={socketRef}
+                                socket={socket}
                             />
                         </div>
                     </div>

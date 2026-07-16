@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 :root {
-  /* Green & Dark Gray theme colors */
-  --indigo-gradient: linear-gradient(135deg, #0a0a0a 0%, #141414 100%);
-  --glass-bg: rgba(27, 27, 31, 0.45);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --indigo: #10b981;
-  --amber: #34d399;
-  --orange: #059669;
+  /* Northern Lights theme colors */
+  --indigo-gradient: linear-gradient(135deg, #0b0f14 0%, #141922 100%);
+  --glass-bg: rgba(20, 25, 34, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --indigo: #fb7185;
+  --amber: #f4b942;
+  --orange: #f97316;
 }
 
 @layer base {
@@ -46,7 +46,8 @@
 
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-indigo-300 via-indigo-400 to-indigo-500 bg-clip-text text-transparent;
+    background: linear-gradient(135deg, #34D399 0%, #2DD4BF 50%, #60A5FA 100%);
+    @apply bg-clip-text text-transparent;
     background-size: 200% 200%;
     animation: gradient-shift 8s ease infinite;
   }
@@ -119,15 +120,15 @@
   }
 
   .badge-primary {
-    @apply bg-indigo-600/20 text-indigo-300 border border-indigo-500/30;
+    @apply bg-indigo-500/10 text-indigo-300 border border-indigo-500/20;
   }
 
   .badge-secondary {
-    @apply bg-indigo-600/10 text-indigo-400 border border-indigo-500/20;
+    @apply bg-amber-500/10 text-amber-300 border border-amber-500/20;
   }
 
   .badge-success {
-    @apply bg-indigo-600/30 text-indigo-200 border border-indigo-500/40;
+    @apply bg-emerald-500/10 text-emerald-300 border border-emerald-500/20;
   }
 }
 

@@ -123,7 +123,7 @@ const initSocket = (httpServer) => {
 
         // --- Graceful disconnect ---
         socket.on('disconnect', () => {
-            socket.leave(`user:${userId}`);
+            // Socket.IO automatically leaves all rooms on disconnect
         });
     });
 

@@ -26,13 +26,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: { success: false, error: 'Too many requests, please try again later.' }
-});
-app.use('/api', limiter);
+// Rate limiting (only in production to avoid rate-limiting local testing/HMR)
+if (process.env.NODE_ENV === 'production') {
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // limit each IP to 100 requests per windowMs
+        message: { success: false, error: 'Too many requests, please try again later.' }
+    });
+    app.use('/api', limiter);
+}
 
 // CORS configuration
 app.use(cors({

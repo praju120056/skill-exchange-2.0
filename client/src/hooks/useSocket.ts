@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
 const SOCKET_URL = import.meta.env.VITE_API_URL
@@ -9,14 +9,14 @@ const SOCKET_URL = import.meta.env.VITE_API_URL
  * Returns a stable socket instance connected with the user's JWT.
  * The socket is automatically disconnected on unmount.
  */
-const useSocket = (): React.MutableRefObject<Socket | null> => {
-    const socketRef = useRef<Socket | null>(null);
+const useSocket = (): Socket | null => {
+    const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) return;
 
-        const socket = io(SOCKET_URL, {
+        const socketInstance = io(SOCKET_URL, {
             auth: { token },
             transports: ['websocket', 'polling'],
             reconnection: true,
@@ -24,19 +24,19 @@ const useSocket = (): React.MutableRefObject<Socket | null> => {
             reconnectionDelay: 1000
         });
 
-        socket.on('connect_error', (err) => {
+        socketInstance.on('connect_error', (err) => {
             console.warn('Socket connection error:', err.message);
         });
 
-        socketRef.current = socket;
+        setSocket(socketInstance);
 
         return () => {
-            socket.disconnect();
-            socketRef.current = null;
+            socketInstance.disconnect();
+            setSocket(null);
         };
     }, []);
 
-    return socketRef;
+    return socket;
 };
 
 export default useSocket;

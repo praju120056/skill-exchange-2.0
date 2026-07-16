@@ -124,8 +124,8 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                             {/* Header */}
                             <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
                                 <div className="flex items-center gap-2.5">
-                                    <div className="w-9 h-9 rounded-lg bg-amber-600/20 border border-amber-500/30 flex items-center justify-center">
-                                        <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
+                                    <div className="w-9 h-9 rounded-lg bg-cyan-950/40 border border-cyan-500/30 flex items-center justify-center">
+                                        <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
@@ -140,12 +140,12 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                                                     onChange={(e) => setSkill(e.target.value)}
                                                     onBlur={() => setIsEditingSkill(false)}
                                                     onKeyDown={(e) => e.key === 'Enter' && setIsEditingSkill(false)}
-                                                    className="px-2 py-0.5 bg-white/10 border border-amber-500/50 rounded text-xs text-amber-300 w-24 focus:outline-none"
+                                                    className="px-2 py-0.5 bg-white/10 border border-cyan-500/50 rounded text-xs text-cyan-300 w-24 focus:outline-none"
                                                 />
                                             ) : (
                                                 <button
                                                     onClick={() => setIsEditingSkill(true)}
-                                                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-600/20 border border-amber-500/30 text-amber-300 text-xs font-semibold hover:bg-amber-600/35 transition-colors"
+                                                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs font-semibold hover:bg-cyan-900/30 transition-colors"
                                                     title="Click to edit skill context"
                                                 >
                                                     <span>{skill || 'Select Skill'}</span>
@@ -166,7 +166,7 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                             </div>
 
                             {/* ChatGPT-style unified input area */}
-                            <div className="relative flex flex-col gap-2 bg-white/5 border border-white/10 focus-within:border-amber-500/50 focus-within:ring-1 focus-within:ring-amber-500/30 rounded-xl p-2.5 transition-all">
+                            <div className="relative flex flex-col gap-2 bg-white/5 border border-white/10 focus-within:border-cyan-500/50 focus-within:ring-1 focus-within:ring-cyan-500/30 rounded-xl p-2.5 transition-all">
                                 <textarea
                                     ref={textareaRef}
                                     value={question}
@@ -187,7 +187,7 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                                     <motion.button
                                         onClick={handleAsk}
                                         disabled={isLoading || !skill.trim() || !question.trim()}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-600 to-orange-500 text-white font-medium text-xs disabled:opacity-40 disabled:pointer-events-none transition-opacity"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-600 to-indigo-500 text-white font-medium text-xs disabled:opacity-40 disabled:pointer-events-none transition-opacity"
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                     >
@@ -210,7 +210,7 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                                             onClick={() => handleSuggestedClick(q)}
                                             className={`text-[10px] px-2.5 py-1 rounded-full border transition-all ${
                                                 question === q
-                                                    ? 'bg-amber-600/25 border-amber-500/40 text-amber-300'
+                                                    ? 'bg-cyan-950/50 border-cyan-500/40 text-cyan-300'
                                                     : 'bg-white/5 border-white/10 text-gray-400 hover:border-white/20 hover:text-gray-300'
                                             }`}
                                         >
@@ -237,13 +237,13 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0 }}
                                         transition={{ duration: 0.25 }}
-                                        className="bg-white/5 border border-amber-500/20 rounded-xl overflow-hidden mt-3"
+                                        className="bg-white/5 border border-cyan-500/20 rounded-xl overflow-hidden mt-3"
                                     >
                                         {/* Response header */}
                                         <div className="flex items-center justify-between px-3 py-2 border-b border-white/10">
                                             <div className="flex items-center gap-1.5">
-                                                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                                                <span className="text-xs font-semibold text-amber-300">Mentor Guide</span>
+                                                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                                                <span className="text-xs font-semibold text-cyan-300">Mentor Guide</span>
                                             </div>
                                             <div className="flex items-center gap-1.5">
                                                 <motion.button
@@ -293,7 +293,7 @@ const AIMentorModal: React.FC<AIMentorModalProps> = ({ isOpen, onClose, initialS
                                                                             {children}
                                                                         </code>
                                                                     ) : (
-                                                                        <code className="bg-black/30 rounded px-1 py-0.5 text-amber-300 text-[10px]">
+                                                                        <code className="bg-black/30 rounded px-1 py-0.5 text-cyan-300 text-[10px]">
                                                                             {children}
                                                                         </code>
                                                                     );

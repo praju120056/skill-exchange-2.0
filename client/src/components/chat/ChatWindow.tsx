@@ -15,7 +15,7 @@ interface TypingUser {
 
 interface ChatWindowProps {
     conversation: Conversation | null;
-    socket: React.MutableRefObject<Socket | null>;
+    socket: Socket | null;
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, socket }) => {
@@ -47,7 +47,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, socket }) => {
             currentConvIdRef.current = conversation._id;
 
             // Join the socket room
-            socket.current?.emit('join:conversation', conversation._id);
+            socket?.emit('join:conversation', conversation._id);
 
             try {
                 const { messages: fetched } = await getMessages(conversation._id);
@@ -69,14 +69,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, socket }) => {
         // Leave previous room when switching
         return () => {
             if (conversation._id) {
-                socket.current?.emit('leave:conversation', conversation._id);
+                socket?.emit('leave:conversation', conversation._id);
             }
         };
     }, [conversation, socket, scrollToBottom]);
 
     // Socket event listeners
     useEffect(() => {
-        const sock = socket.current;
+        const sock = socket;
         if (!sock) return;
 
         const onNewMessage = (msg: Message) => {
@@ -115,10 +115,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, socket }) => {
 
     const handleSend = useCallback(
         (text: string) => {
-            if (!conversation || !socket.current || isSending) return;
+            if (!conversation || !socket || isSending) return;
             setIsSending(true);
 
-            socket.current.emit(
+            socket.emit(
                 'message:send',
                 { conversationId: conversation._id, text },
                 () => {
@@ -131,11 +131,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, socket }) => {
 
     const handleTyping = useCallback(
         (isTyping: boolean) => {
-            if (!conversation || !socket.current) return;
+            if (!conversation || !socket) return;
             if (isTyping) {
-                socket.current.emit('typing:start', { conversationId: conversation._id });
+                socket.emit('typing:start', { conversationId: conversation._id });
             } else {
-                socket.current.emit('typing:stop', { conversationId: conversation._id });
+                socket.emit('typing:stop', { conversationId: conversation._id });
             }
         },
         [conversation, socket]
