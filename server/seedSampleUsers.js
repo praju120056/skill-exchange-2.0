@@ -66,6 +66,13 @@ const seedSampleData = async () => {
         for (let i = 0; i < sampleUsers.length; i++) {
             const userData = sampleUsers[i];
 
+<<<<<<< HEAD
+=======
+            // Hash password
+            //const salt = await bcrypt.genSalt(10);
+            //const hashedPassword = await bcrypt.hash(userData.password, salt);
+
+>>>>>>> 65a94ea (Google Auth)
             // Create user
             const user = await User.create({
                 name: userData.name,

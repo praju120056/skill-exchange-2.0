@@ -13,6 +13,7 @@ interface AuthContextType {
     user: User | null;
     loading: boolean;
     login: (email: string, password: string) => Promise<void>;
+    googleLogin: (token: string) => Promise<void>;
     register: (name: string, email: string, password: string) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
@@ -73,6 +74,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
+    const googleLogin = async (token: string) => {
+        try {
+            const response = await api.post('/auth/google-login', { token });
+
+            if (response.success) {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
+                setUser(response.user);
+                toast.success('Welcome back!');
+            }
+        } catch (error: any) {
+            toast.error(error.message);
+            throw error;
+        }
+    };
+
     const register = async (name: string, email: string, password: string) => {
         try {
             const response = await api.post('/auth/register', { name, email, password });
@@ -100,6 +117,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         user,
         loading,
         login,
+        googleLogin,
         register,
         logout,
         isAuthenticated: !!user

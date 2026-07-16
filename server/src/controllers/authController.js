@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Joi from 'joi';
+import { OAuth2Client } from 'google-auth-library';
 import asyncHandler from '../utils/asyncHandler.js';
 import User from '../models/User.js';
 
@@ -142,3 +143,59 @@ export const logout = asyncHandler(async (req, res) => {
         message: 'Logged out successfully'
     });
 });
+
+// Initialize Google OAuth Client
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// @desc    Google Login
+// @route   POST /api/auth/google-login
+// @access  Public
+export const googleLogin = asyncHandler(async (req, res) => {
+    const { token } = req.body;
+
+    if (!token) {
+        return res.status(400).json({
+            success: false,
+            error: 'No token provided'
+        });
+    }
+
+    try {
+        const ticket = await googleClient.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        
+        const { name, email, picture, sub: googleId } = ticket.getPayload();
+
+        let user = await User.findOne({ email });
+
+        if (user) {
+            // Update existing user with googleId if they don't have one
+            if (!user.googleId) {
+                user.googleId = googleId;
+                if (!user.avatarUrl || user.avatarUrl.includes('ui-avatars.com')) {
+                    user.avatarUrl = picture;
+                }
+                await user.save();
+            }
+        } else {
+            // Create new user
+            user = await User.create({
+                name,
+                email,
+                googleId,
+                avatarUrl: picture
+            });
+        }
+
+        sendTokenResponse(user, 200, res);
+    } catch (error) {
+        console.error('Google Auth Error:', error);
+        return res.status(401).json({
+            success: false,
+            error: 'Invalid Google token'
+        });
+    }
+});
+
