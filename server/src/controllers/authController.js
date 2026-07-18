@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import Joi from 'joi';
 import { OAuth2Client } from 'google-auth-library';
 import asyncHandler from '../utils/asyncHandler.js';
+import sendEmail from '../utils/sendEmail.js';
 import User from '../models/User.js';
 
 // Validation schemas
@@ -144,6 +145,82 @@ export const logout = asyncHandler(async (req, res) => {
     });
 });
 
+// @desc    Forgot Password
+// @route   POST /api/auth/forgotpassword
+// @access  Public
+export const forgotPassword = asyncHandler(async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+        return res.status(404).json({ success: false, error: 'There is no user with that email' });
+    }
+
+    const otp = user.getResetPasswordOtp();
+    await user.save({ validateBeforeSave: false });
+
+    const message = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <h1 style="color: #4f46e5;">Skill Exchange</h1>
+            <p>You requested a password reset. Your One-Time Password (OTP) is:</p>
+            <h2 style="background: #f3f4f6; padding: 15px; display: inline-block; letter-spacing: 5px; font-size: 24px; color: #1e1b4b; border-radius: 4px;">${otp}</h2>
+            <p style="color: #ef4444;">This OTP is valid for 10 minutes.</p>
+            <p style="font-size: 12px; color: #6b7280; margin-top: 30px;">If you did not request this, please ignore this email.</p>
+        </div>
+    `;
+
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: 'Skill Exchange - Password Reset OTP',
+            html: message
+        });
+        res.status(200).json({ success: true, message: 'Email sent' });
+    } catch (err) {
+        console.error('Email sending error:', err);
+        user.resetPasswordOtp = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+        return res.status(500).json({ success: false, error: 'Email could not be sent' });
+    }
+});
+
+// @desc    Reset Password
+// @route   PUT /api/auth/resetpassword
+// @access  Public
+export const resetPassword = asyncHandler(async (req, res) => {
+    const { email, otp, password } = req.body;
+
+    if (!email || !otp || !password) {
+        return res.status(400).json({ success: false, error: 'Please provide email, otp, and new password' });
+    }
+
+    const user = await User.findOne({
+        email,
+        resetPasswordOtp: otp,
+        resetPasswordExpire: { $gt: Date.now() }
+    }).select('+password');
+
+    if (!user) {
+        return res.status(400).json({ success: false, error: 'Invalid or expired OTP' });
+    }
+
+    // Check if the user is trying to use the same password
+    // (Only if they actually had a password before, Google-only users might not)
+    if (user.password) {
+        const isMatch = await user.matchPassword(password);
+        if (isMatch) {
+            return res.status(400).json({ success: false, error: 'New password cannot be the same as your old password' });
+        }
+    }
+
+    user.password = password;
+    user.resetPasswordOtp = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    sendTokenResponse(user, 200, res);
+});
+
 // Initialize Google OAuth Client
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -165,7 +242,7 @@ export const googleLogin = asyncHandler(async (req, res) => {
             idToken: token,
             audience: process.env.GOOGLE_CLIENT_ID,
         });
-        
+
         const { name, email, picture, sub: googleId } = ticket.getPayload();
 
         let user = await User.findOne({ email });

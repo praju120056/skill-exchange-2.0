@@ -37,6 +37,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'https://ui-avatars.com/api/?background=random'
     },
+    resetPasswordOtp: String,
+    resetPasswordExpire: Date,
     createdAt: {
         type: Date,
         default: Date.now
@@ -66,5 +68,17 @@ userSchema.pre('save', function (next) {
     }
     next();
 });
+
+// Generate and hash password reset OTP
+userSchema.methods.getResetPasswordOtp = function () {
+    // Generate a 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Set OTP and expiration (10 minutes)
+    this.resetPasswordOtp = otp;
+    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+
+    return otp;
+};
 
 export default mongoose.model('User', userSchema);
