@@ -21,6 +21,11 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
+// Trust proxy when behind reverse proxy (Azure, Render, Nginx) for HTTPS cookies
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
