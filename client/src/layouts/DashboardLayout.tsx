@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, UserCircle, LogOut, Sparkles } from 'lucide-react';
+import { Home, UserCircle, LogOut, Sparkles, MessageSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface DashboardLayoutProps {
@@ -15,6 +15,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     const navItems = [
         { name: 'Dashboard', path: '/dashboard', icon: Home },
         { name: 'Find Matches', path: '/matches', icon: Sparkles },
+        { name: 'Messages', path: '/messages', icon: MessageSquare },
         { name: 'Profile', path: '/profile', icon: UserCircle },
     ];
 

@@ -21,11 +21,11 @@ const Button: React.FC<ButtonProps> = ({
     onClick,
     type,
 }) => {
-    const baseClasses = 'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseClasses = 'inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variantClasses = {
-        primary: 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white hover:shadow-neon-blue hover:scale-105',
-        secondary: 'bg-gradient-to-r from-amber-600 to-orange-500 text-white hover:shadow-neon hover:scale-105',
+        primary: 'bg-gradient-primary text-white hover:shadow-neon-blue hover:scale-105',
+        secondary: 'bg-gradient-secondary text-white hover:shadow-neon hover:scale-105',
         outline: 'border-2 border-indigo-500 text-indigo-300 hover:bg-indigo-500/10 hover:border-indigo-400',
         ghost: 'text-indigo-300 hover:bg-white/5'
     };

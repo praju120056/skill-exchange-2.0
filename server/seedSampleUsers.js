@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import bcrypt from 'bcryptjs';
 import User from './src/models/User.js';
 import Skill from './src/models/Skill.js';
 import UserSkill from './src/models/UserSkill.js';
@@ -67,15 +66,11 @@ const seedSampleData = async () => {
         for (let i = 0; i < sampleUsers.length; i++) {
             const userData = sampleUsers[i];
 
-            // Hash password
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(userData.password, salt);
-
             // Create user
             const user = await User.create({
                 name: userData.name,
                 email: userData.email,
-                password: hashedPassword,
+                password: userData.password,
             });
 
             console.log(`✓ Created user: ${user.name}`);

@@ -4,9 +4,11 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Matches from './pages/Matches';
 import Profile from './pages/Profile';
+import Messages from './pages/Messages';
 import HeroSection from './components/sections/HeroSection';
 import Button from './components/ui/Button';
 import { motion } from 'framer-motion';
@@ -117,6 +119,7 @@ function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route
                         path="/dashboard"
                         element={
@@ -138,6 +141,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <Profile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/messages"
+                        element={
+                            <ProtectedRoute>
+                                <Messages />
                             </ProtectedRoute>
                         }
                     />

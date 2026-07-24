@@ -13,7 +13,6 @@ export interface UserSkill {
 export interface Match {
     _id: string;
     name: string;
-    email: string;
     avatarUrl: string;
     matchCount: number;
     teachingSkills: UserSkill[];

@@ -3,8 +3,15 @@ node_modules/
 
 # Environment variables
 .env
+.env.production
 .env.local
 .env.*.local
+.env.*
+
+# Tests
+*test*
+*.test.*
+*.spec.*
 
 # Build output
 dist/

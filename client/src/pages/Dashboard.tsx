@@ -5,6 +5,8 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import AnimatedCard from '../components/ui/AnimatedCard';
 import Button from '../components/ui/Button';
 import SkillBadge from '../components/ui/SkillBadge';
+import AIMentorButton from '../components/ai/AIMentorButton';
+import AIMentorModal from '../components/ai/AIMentorModal';
 import api from '../utils/api';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
@@ -30,6 +32,7 @@ const Dashboard: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showAddSkill, setShowAddSkill] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [aiSkill, setAiSkill] = useState<string | null>(null);
 
     useEffect(() => {
         fetchUserSkills();
@@ -196,13 +199,18 @@ const Dashboard: React.FC = () => {
                     ) : filteredSkills.length > 0 ? (
                         <div className="flex flex-wrap gap-3">
                             {filteredSkills.map(userSkill => (
-                                <SkillBadge
-                                    key={userSkill._id}
-                                    name={userSkill.skillId.name}
-                                    category={userSkill.skillId.category}
-                                    variant={activeTab === 'teach' ? 'primary' : 'secondary'}
-                                    onRemove={() => handleRemoveSkill(userSkill._id)}
-                                />
+                                <div key={userSkill._id} className="flex items-center gap-2">
+                                    <SkillBadge
+                                        name={userSkill.skillId.name}
+                                        category={userSkill.skillId.category}
+                                        variant={activeTab === 'teach' ? 'primary' : 'secondary'}
+                                        onRemove={() => handleRemoveSkill(userSkill._id)}
+                                    />
+                                    <AIMentorButton
+                                        skillName={userSkill.skillId.name}
+                                        onClick={(name) => setAiSkill(name)}
+                                    />
+                                </div>
                             ))}
                         </div>
                     ) : (
@@ -245,6 +253,13 @@ const Dashboard: React.FC = () => {
                     </AnimatedCard>
                 </div>
             </div>
+
+            {/* AI Mentor Modal */}
+            <AIMentorModal
+                isOpen={!!aiSkill}
+                onClose={() => setAiSkill(null)}
+                initialSkill={aiSkill ?? ''}
+            />
         </DashboardLayout>
     );
 };
