@@ -18,12 +18,15 @@ jobs:
           node-version: 20
 
       - name: Install server dependencies
-        run: npm install
+        run: npm ci || npm install
         working-directory: ./server
 
       - name: Build client
-        run: npm install && npm run build
+        run: npm ci || npm install && npm run build
         working-directory: ./client
+        env:
+          VITE_API_URL: /api
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID || '354648702586-hfofb0noki6iuaia6gcubpa9lme4er0n.apps.googleusercontent.com' }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
