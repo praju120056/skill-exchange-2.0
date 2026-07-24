@@ -5,6 +5,7 @@ import AuthLayout from '../layouts/AuthLayout';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Register: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -15,7 +16,7 @@ const Register: React.FC = () => {
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isLoading, setIsLoading] = useState(false);
-    const { register } = useAuth();
+    const { register, googleLogin } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +67,17 @@ const Register: React.FC = () => {
             console.error('Registration error:', error);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        if (credentialResponse.credential) {
+            try {
+                await googleLogin(credentialResponse.credential);
+                navigate('/dashboard');
+            } catch (error) {
+                console.error('Google login error:', error);
+            }
         }
     };
 
@@ -125,6 +137,25 @@ const Register: React.FC = () => {
                 >
                     Create Account
                 </Button>
+
+                <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-700"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-slate-900 text-gray-400">Or continue with</span>
+                    </div>
+                </div>
+
+                <div className="flex justify-center">
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => console.log('Google Login Failed')}
+                        useOneTap
+                        theme="filled_black"
+                        shape="pill"
+                    />
+                </div>
 
                 <p className="text-center text-gray-400">
                     Already have an account?{' '}
